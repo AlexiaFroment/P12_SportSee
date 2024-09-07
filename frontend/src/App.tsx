@@ -1,10 +1,12 @@
-import "./App.css"
-
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { PublicRouteur } from "@/routes/PublicRouteur"
 function App() {
   return (
-    <>
-      <h1>Hello World</h1>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/*' element={<PublicRouteur />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

@@ -1,0 +1,20 @@
+/* src/reset.css */
+
+/* Réinitialisation des marges et des espacements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Réinitialisation des styles des éléments de base */
+html,
+body {
+  font-family: sans-serif; /* Assure-toi que la police par défaut est homogène */
+}
+
+/* Réinitialisation des listes */
+ul,
+ol {
+  list-style: none;
+}
