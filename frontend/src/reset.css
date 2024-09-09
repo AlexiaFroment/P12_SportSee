@@ -18,3 +18,14 @@ ul,
 ol {
   list-style: none;
 }
+
+/* Réinitialisation du btn*/
+button {
+  cursor: default !important;
+}
+
+/* SideNav */
+.rotated-text {
+  white-space: nowrap;
+  transform: rotate(270deg);
+}

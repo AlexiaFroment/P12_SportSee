@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom"
 import Logo from "@/assets/images/logo.png"
-export const Header = () => {
+export const TopNav = () => {
   return (
-    <header className='header bg-dark p-1'>
+    <header className='topnav bg-dark p-1'>
       <nav className='d-flex align-items-center justify-content-between '>
         <img
           src={Logo}
