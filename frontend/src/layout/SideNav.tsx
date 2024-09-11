@@ -3,7 +3,7 @@ import yoga from "@/assets/images/yoga.png"
 import swim from "@/assets/images/swim.png"
 import ride from "@/assets/images/ride.png"
 import dumbbell from "@/assets/images/dumbbell.png"
-export const SideNav = () => {
+export const SideNav: React.FC = () => {
   return (
     <aside className='aside bg-dark' style={{ width: "120px" }}>
       <nav className='d-flex flex-column align-items-center justify-content-around h-100'>

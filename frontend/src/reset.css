@@ -19,6 +19,10 @@ ol {
   list-style: none;
 }
 
+/* a {
+  text-decoration: none !important;
+} */
+
 /* Réinitialisation du btn*/
 button {
   cursor: default !important;
