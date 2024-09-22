@@ -4,7 +4,7 @@ import {
   UserDataPerformance,
   UserDataAverageSession,
 } from "@/_modules/Types"
-import { UserActivity, UserProfile } from "@/_models/UserProfile"
+import { UserProfile } from "@/_models/UserProfile"
 const BASE_URL = "http://localhost:3000/user"
 
 type ApiResponse<T> = {
@@ -12,7 +12,7 @@ type ApiResponse<T> = {
 }
 
 // FETCH ROUTE USERID
-const fetchUser = async (userId: number): Promise<UserData> => {
+const fetchUser = async (userId: number): Promise<UserProfile> => {
   try {
     const resp = await fetch(`${BASE_URL}/${userId}`)
     if (!resp.ok) {
@@ -28,7 +28,7 @@ const fetchUser = async (userId: number): Promise<UserData> => {
 }
 
 // FETCH ROUTE USERACTIVITY
-const fetchUserActivity = async (userId: number): Promise<UserDataActivity> => {
+const fetchUserActivity = async (userId: number): Promise<UserProfile> => {
   try {
     const resp = await fetch(`${BASE_URL}/${userId}/activity`)
     if (!resp.ok) {
@@ -36,7 +36,7 @@ const fetchUserActivity = async (userId: number): Promise<UserDataActivity> => {
     }
     const result: ApiResponse<UserDataActivity> = await resp.json()
     console.log("user activity", result)
-    return new UserActivity(result.data)
+    return new UserProfile(result.data)
   } catch (err) {
     console.error("Error get data user activity : ", err)
     throw err

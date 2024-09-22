@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { UserProfile, UserActivity } from "@/_models/UserProfile"
+import { UserProfile } from "@/_models/UserProfile"
 
 import {
   UserData,
@@ -39,13 +39,18 @@ export const Profil: React.FC = () => {
       try {
         const userId = 12
 
-        const userProfile = await UserProfile.fetchData(userId, useMock)
-        const userActivity = await UserActivity.fetchDataActivity(
+        const userProfile = await UserProfile.fetchData(
           userId,
-          useMock
+          useMock,
+          "profile"
         )
         setUser(userProfile)
-        setUserActivity(userActivity)
+        const userActivity = await UserProfile.fetchData(
+          userId,
+          useMock,
+          "activity"
+        )
+        setUserActivity(userActivity as UserDataActivity)
       } catch (err) {
         console.error("Error fetching user data :", err)
         setError("Failed to fetch user data")
