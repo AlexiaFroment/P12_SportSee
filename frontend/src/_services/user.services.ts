@@ -3,7 +3,8 @@ import {
   UserDataActivity,
   UserDataPerformance,
   UserDataAverageSession,
-} from "@/modules/Types"
+} from "@/_modules/Types"
+import { UserActivity, UserProfile } from "@/_models/UserProfile"
 const BASE_URL = "http://localhost:3000/user"
 
 type ApiResponse<T> = {
@@ -19,7 +20,7 @@ const fetchUser = async (userId: number): Promise<UserData> => {
     }
     const result: ApiResponse<UserData> = await resp.json()
     console.log("user", result)
-    return result.data
+    return new UserProfile(result.data)
   } catch (err) {
     console.error("Error get data user :", err)
     throw err
@@ -35,7 +36,7 @@ const fetchUserActivity = async (userId: number): Promise<UserDataActivity> => {
     }
     const result: ApiResponse<UserDataActivity> = await resp.json()
     console.log("user activity", result)
-    return result.data
+    return new UserActivity(result.data)
   } catch (err) {
     console.error("Error get data user activity : ", err)
     throw err

@@ -1,5 +1,5 @@
 import MockAdapter from "axios-mock-adapter"
-import { axiosInstance } from "@/api/axiosInstance"
+import { axiosInstance } from "@/_mock/axiosInstance"
 
 const mock = new MockAdapter(axiosInstance, { onNoMatch: "throwException" })
 

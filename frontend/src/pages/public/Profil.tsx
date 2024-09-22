@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
-import userservices from "@/_services/user.services"
-import { axiosInstance } from "@/api/axiosInstance"
+import { UserProfile, UserActivity } from "@/_models/UserProfile"
+
 import {
   UserData,
   UserDataActivity,
   UserDataPerformance,
   UserDataAverageSession,
-} from "@/modules/Types"
+} from "@/_modules/Types"
 
 import {
   ResponsiveContainer,
@@ -23,7 +23,7 @@ export const Profil: React.FC = () => {
   // USE MOCK API OR FETCH API
   const useMock: boolean = true
   // GET DATA ON DIFFERENT ROADS SETUP
-  const [user, setUser] = useState<UserData | null>(null)
+  const [user, setUser] = useState<UserProfile | null>(null)
   const [userActivity, setUserActivity] = useState<UserDataActivity | null>(
     null
   )
@@ -39,33 +39,13 @@ export const Profil: React.FC = () => {
       try {
         const userId = 12
 
-        if (useMock) {
-          const userMock = await axiosInstance.get(`/${userId}`)
-          const activityMock = await axiosInstance.get(`/${userId}/activity`)
-          const performanceMock = await axiosInstance.get(
-            `/${userId}/performance`
-          )
-          const averageSessionMock = await axiosInstance.get(
-            `/${userId}/average-sessions`
-          )
-          setUser(userMock.data.data)
-          setUserActivity(activityMock.data.data)
-          setUserPerformance(performanceMock.data.data)
-          setUserAverageSession(averageSessionMock.data.data)
-          console.log("use mockAPI")
-        } else {
-          const user = await userservices.fetchUser(userId)
-          const activity = await userservices.fetchUserActivity(userId)
-          const performance = await userservices.fetchUserPerformance(userId)
-          const averageSession = await userservices.fetchUserAverageSession(
-            userId
-          )
-          setUser(user)
-          setUserActivity(activity)
-          setUserPerformance(performance)
-          setUserAverageSession(averageSession)
-          console.log("use fetchAPI")
-        }
+        const userProfile = await UserProfile.fetchData(userId, useMock)
+        const userActivity = await UserActivity.fetchDataActivity(
+          userId,
+          useMock
+        )
+        setUser(userProfile)
+        setUserActivity(userActivity)
       } catch (err) {
         console.error("Error fetching user data :", err)
         setError("Failed to fetch user data")
@@ -95,36 +75,38 @@ export const Profil: React.FC = () => {
       </div>
 
       <div className='container p-5'>
-        <p className='fs-5 fw-bold'>Activité quotidienne</p>
-        <ResponsiveContainer width='100%' height={400}>
-          <BarChart data={userActivity?.sessions}>
-            <CartesianGrid strokeDasharray='3 3' vertical={false} />
-            <XAxis
-              dataKey='day'
-              stroke='#9b9eac'
-              tickLine={false}
-              tickFormatter={(_, index) => (index + 1).toString()}
-              // fontSize={16}
-              label={{ position: "insideBottom", offset: -5 }}
-            />
-            <YAxis
-              dataKey='kilogram'
-              interval={1}
-              stroke='#9b9eac'
-              tickLine={false}
-              axisLine={false}
-              label={{ angle: -90, position: "insideLeft" }}
-            />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey='kilogram' fill='#020203' name='Poids (kg)' />
-            <Bar
-              dataKey='calories'
-              fill='#ff0000'
-              name='Calories brûlées (kCal)'
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        <p className='fs-5 fw-bold ps-3'>Activité quotidienne</p>
+        <div className='p-3'>
+          <ResponsiveContainer width='100%' height={400}>
+            <BarChart data={userActivity?.sessions}>
+              <CartesianGrid strokeDasharray='3 3' vertical={false} />
+              <XAxis
+                dataKey='day'
+                stroke='#9b9eac'
+                tickLine={false}
+                tickFormatter={(_, index) => (index + 1).toString()}
+                // fontSize={16}
+                label={{ position: "insideBottom", offset: -5 }}
+              />
+              <YAxis
+                dataKey='kilogram'
+                interval={1}
+                stroke='#9b9eac'
+                tickLine={false}
+                axisLine={false}
+                label={{ angle: -90, position: "insideLeft" }}
+              />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey='kilogram' fill='#020203' name='Poids (kg)' />
+              <Bar
+                dataKey='calories'
+                fill='#ff0000'
+                name='Calories brûlées (kCal)'
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
         <p>{userActivity?.sessions[0].day}</p>
         {userActivity?.sessions.map((session, index) => (
