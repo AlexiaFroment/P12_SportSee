@@ -1,9 +1,3 @@
-export interface BtnProps {
-  width?: string
-  backgroundColor?: string
-  icon: string
-}
-
 export interface UserData {
   id: number
   userInfos: {
@@ -11,7 +5,8 @@ export interface UserData {
     lastName: string
     age: number
   }
-  score: number
+  score?: number
+  todayScore?: number
   keyData: {
     calorieCount: number
     proteinCount: number
@@ -44,10 +39,24 @@ export interface UserDataPerformance {
   }[]
 }
 
-export interface UserDataAverageSession {
+export interface UserDataAverageSessions {
   userId: number
   sessions: {
     day: number
     sessionLength: number
   }[]
+}
+
+export interface UserProfile {
+  userData: UserData
+  userActivity: UserDataActivity
+  userPerformance: UserDataPerformance
+  userAverageSessions: UserDataAverageSessions
+  getFirstName(): string | undefined
+  getKeyDataCalorie(): number | undefined
+  getKeyDataProtein(): number | undefined
+  getKeyDataCarbonydrate(): number | undefined
+  getKeyDataLipid(): number | undefined
+  getActivity(): { day: string; kilogram: number; calories: number }[]
+  getAverageSessions(): { day: number; sessionLength: number }[]
 }

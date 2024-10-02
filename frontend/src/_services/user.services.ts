@@ -2,82 +2,52 @@ import {
   UserData,
   UserDataActivity,
   UserDataPerformance,
-  UserDataAverageSession,
+  UserDataAverageSessions,
 } from "@/_modules/Types"
-import { UserProfile } from "@/_models/UserProfile"
+
 const BASE_URL = "http://localhost:3000/user"
 
 type ApiResponse<T> = {
   data: T
 }
 
-// FETCH ROUTE USERID
-const fetchUser = async (userId: number): Promise<UserProfile> => {
+// FETCH FUNCTION
+const fetchData = async <T>(url: string): Promise<T> => {
   try {
-    const resp = await fetch(`${BASE_URL}/${userId}`)
+    const resp = await fetch(url)
     if (!resp.ok) {
-      throw new Error(`Error HTTP : ${resp.status}`)
+      throw new Error(`Error HTTP: ${resp.status}`)
     }
-    const result: ApiResponse<UserData> = await resp.json()
-    console.log("user", result)
-    return new UserProfile(result.data)
+    const result: ApiResponse<T> = await resp.json()
+    return result.data
   } catch (err) {
-    console.error("Error get data user :", err)
+    console.error(`Error fetching data from ${url} : `, err)
     throw err
   }
+}
+
+// FETCH ROUTE USERID
+const fetchUser = (userId: number): Promise<UserData> => {
+  return fetchData<UserData>(`${BASE_URL}/${userId}`)
 }
 
 // FETCH ROUTE USERACTIVITY
-const fetchUserActivity = async (userId: number): Promise<UserProfile> => {
-  try {
-    const resp = await fetch(`${BASE_URL}/${userId}/activity`)
-    if (!resp.ok) {
-      throw new Error(`Error HTTP : ${resp.status}`)
-    }
-    const result: ApiResponse<UserDataActivity> = await resp.json()
-    console.log("user activity", result)
-    return new UserProfile(result.data)
-  } catch (err) {
-    console.error("Error get data user activity : ", err)
-    throw err
-  }
+const fetchUserActivity = (userId: number): Promise<UserDataActivity> => {
+  return fetchData<UserDataActivity>(`${BASE_URL}/${userId}/activity`)
 }
 
 // FETCH ROUTE USERPERFORMANCE
-const fetchUserPerformance = async (
-  userId: number
-): Promise<UserDataPerformance> => {
-  try {
-    const resp = await fetch(`${BASE_URL}/${userId}/performance`)
-    if (!resp.ok) {
-      throw new Error(`Error HTTP : ${resp.status}`)
-    }
-    const result: ApiResponse<UserDataPerformance> = await resp.json()
-    console.log("user performance : ", result)
-
-    return result.data
-  } catch (err) {
-    console.error("Error get data user performance :", err)
-    throw err
-  }
+const fetchUserPerformance = (userId: number): Promise<UserDataPerformance> => {
+  return fetchData<UserDataPerformance>(`${BASE_URL}/${userId}/performance`)
 }
 
 // FETCH ROUTE USERAVERAGESESSION
-const fetchUserAverageSession = async (
+const fetchUserAverageSession = (
   userId: number
-): Promise<UserDataAverageSession> => {
-  try {
-    const resp = await fetch(`${BASE_URL}/${userId}/average-sessions`)
-    if (!resp.ok) {
-      throw new Error(`Error HTTP : ${resp.status}`)
-    }
-    const result: ApiResponse<UserDataAverageSession> = await resp.json()
-    console.log("user average session :", result)
-    return result.data
-  } catch (err) {
-    console.error("Error get data user average session :", err)
-    throw err
-  }
+): Promise<UserDataAverageSessions> => {
+  return fetchData<UserDataAverageSessions>(
+    `${BASE_URL}/${userId}/average-sessions`
+  )
 }
 
 export const userservices = {
@@ -86,5 +56,3 @@ export const userservices = {
   fetchUserPerformance,
   fetchUserAverageSession,
 }
-
-export default userservices

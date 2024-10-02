@@ -1,5 +1,10 @@
 import styled from "styled-components"
-import { BtnProps } from "@/_modules/Types"
+
+type BtnProps = {
+  width?: string
+  backgroundColor?: string
+  icon: string
+}
 
 const StyledBtn = styled.button<Omit<BtnProps, "icon">>`
   width: ${(props) => props.width || "65px"};

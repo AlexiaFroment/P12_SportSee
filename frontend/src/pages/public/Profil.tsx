@@ -1,137 +1,132 @@
+import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { UserProfile } from "@/_models/UserProfile"
 
-import {
-  UserData,
-  UserDataActivity,
-  UserDataPerformance,
-  UserDataAverageSession,
-} from "@/_modules/Types"
+import { UserProfile } from "@/_modules/Types"
+import { User } from "@/_models/User"
+import { userservices } from "@/_services/user.services"
+import { MockService } from "@/_services/mock.services"
 
-import {
-  ResponsiveContainer,
-  BarChart,
-  XAxis,
-  YAxis,
-  Bar,
-  Tooltip,
-  Legend,
-  CartesianGrid,
-} from "recharts"
+import { ToggleBtn } from "@/components/ToggleBtn"
+
+import { KeyDataSection } from "@/components/Charts/KeyDataSection"
+import { BartChart } from "@/components/Charts/BartChart"
+import { TinyLineChart } from "@/components/Charts/TinyLineChart"
+
+// import { TinyLineChart } from "@/components/Charts/TinyLineChart"
 
 export const Profil: React.FC = () => {
-  // USE MOCK API OR FETCH API
-  const useMock: boolean = true
-  // GET DATA ON DIFFERENT ROADS SETUP
-  const [user, setUser] = useState<UserProfile | null>(null)
-  const [userActivity, setUserActivity] = useState<UserDataActivity | null>(
-    null
-  )
-  const [userPerformance, setUserPerformance] =
-    useState<UserDataPerformance | null>(null)
-  const [userAverageSession, setUserAverageSession] =
-    useState<UserDataAverageSession | null>(null)
+  // MANAGEMENT PARAMS ON THE PROFIL ROAD
+  const { userId } = useParams<{ userId: string }>()
+  const navigate = useNavigate()
+
+  // DEFINE STATE TO STOCK USERPROFILE
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
+  const [useMock, setUseMock] = useState<boolean>(true)
+  const [selectUser, setSelectUser] = useState<string>("12")
+
+  //TOGGLE MOCK STATE OR REAL API
+  const handleMockToggle = () => {
+    console.log("toggling mock state")
+    setUseMock(!useMock)
+  }
+  // TOGGLE USER 12 OR 18
+  const handleUserToggle = () => {
+    const newUser = selectUser === "12" ? "18" : "12"
+    setSelectUser(newUser)
+    navigate(`/profil/${newUser}`)
+  }
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const getData = async () => {
       try {
-        const userId = 12
+        if (useMock) {
+          console.log("get data with mock")
 
-        const userProfile = await UserProfile.fetchData(
-          userId,
-          useMock,
-          "profile"
-        )
-        setUser(userProfile)
-        const userActivity = await UserProfile.fetchData(
-          userId,
-          useMock,
-          "activity"
-        )
-        setUserActivity(userActivity as UserDataActivity)
+          const [userData, userActivity, userPerformance, userAverageSessions] =
+            await Promise.all([
+              MockService.MockData(Number(userId)),
+              MockService.MockActivity(Number(userId)),
+              MockService.MockPerformance(Number(userId)),
+              MockService.MockAverageSessions(Number(userId)),
+            ])
+
+          if (
+            userData &&
+            userActivity &&
+            userPerformance &&
+            userAverageSessions
+          ) {
+            const userInstance = new User(
+              userData,
+              userActivity,
+              userPerformance,
+              userAverageSessions
+            )
+            setUserProfile(userInstance)
+          }
+        } else {
+          console.log("get data with real api")
+          const [userData, userActivity, userPerformance, userAverageSessions] =
+            await Promise.all([
+              userservices.fetchUser(Number(userId)),
+              userservices.fetchUserActivity(Number(userId)),
+              userservices.fetchUserPerformance(Number(userId)),
+              userservices.fetchUserAverageSession(Number(userId)),
+            ])
+
+          const userInstance = new User(
+            userData,
+            userActivity,
+            userPerformance,
+            userAverageSessions
+          )
+          setUserProfile(userInstance)
+        }
       } catch (err) {
-        console.error("Error fetching user data :", err)
-        setError("Failed to fetch user data")
+        console.error("Error to get user profile : ", err)
       } finally {
         setLoading(false)
       }
     }
-    fetchUserData()
-  }, [useMock])
+
+    getData()
+  }, [userId, useMock])
 
   if (loading) return <p>Loading ...</p>
-  if (error) return <p>{error}</p>
-  if (!user) return <p>No user data available</p>
+  if (!userProfile) return <p>User not found</p>
 
   return (
     <>
-      <div className='container p-5'>
-        {user ? (
-          <h1 className='py-4 fw-bold'>
-            <span>Bonjour</span>
-            <span style={{ color: "red" }}> {user.userInfos.firstName}</span>
-          </h1>
-        ) : (
-          <p>No user data available</p>
-        )}
+      <div className='container py-3 px-5 d-flex flex-row justify-content-start'>
+        <ToggleBtn
+          leftText='Mock API'
+          rightText='Real API'
+          isChecked={useMock}
+          onToggle={handleMockToggle}
+        />
+        <ToggleBtn
+          leftText='User12'
+          rightText='User18'
+          selectUser={selectUser}
+          onToggle={handleUserToggle}
+        />
+      </div>
+
+      <div className='container py-3 px-5'>
+        <h1 className='py-4 fw-bold'>
+          <span>Bonjour</span>
+          <span style={{ color: "red" }}> {userProfile.getFirstName()}</span>
+        </h1>
         <p>Félicitations ! Vous avez explosé vos objectifs hier 👋🏼</p>
       </div>
 
       <div className='container p-5'>
-        <p className='fs-5 fw-bold ps-3'>Activité quotidienne</p>
-        <div className='p-3'>
-          <ResponsiveContainer width='100%' height={400}>
-            <BarChart data={userActivity?.sessions}>
-              <CartesianGrid strokeDasharray='3 3' vertical={false} />
-              <XAxis
-                dataKey='day'
-                stroke='#9b9eac'
-                tickLine={false}
-                tickFormatter={(_, index) => (index + 1).toString()}
-                // fontSize={16}
-                label={{ position: "insideBottom", offset: -5 }}
-              />
-              <YAxis
-                dataKey='kilogram'
-                interval={1}
-                stroke='#9b9eac'
-                tickLine={false}
-                axisLine={false}
-                label={{ angle: -90, position: "insideLeft" }}
-              />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey='kilogram' fill='#020203' name='Poids (kg)' />
-              <Bar
-                dataKey='calories'
-                fill='#ff0000'
-                name='Calories brûlées (kCal)'
-              />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className='d-flex'>
+          <BartChart data={userProfile.getActivity()} />
+          <KeyDataSection userProfile={userProfile} />
         </div>
-
-        <p>{userActivity?.sessions[0].day}</p>
-        {userActivity?.sessions.map((session, index) => (
-          <p key={index}>
-            Day : {session.day}, Kg : {session.kilogram}, Calories :{" "}
-            {session.calories}
-          </p>
-        ))}
-        <h2>Performance</h2>
-        {userPerformance?.data.map((d, index) => (
-          <p key={index}>
-            Kind : {d.kind}, Value : {d.value}
-          </p>
-        ))}
-        <h2>Averagesession</h2>
-        {userAverageSession?.sessions.map((session, index) => (
-          <p key={index}>
-            Day : {session.day}, Session length : {session.sessionLength}
-          </p>
-        ))}
+        <TinyLineChart data={userProfile.getAverageSessions()} />
       </div>
     </>
   )
