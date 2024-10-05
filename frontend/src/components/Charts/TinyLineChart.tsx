@@ -8,7 +8,7 @@ import {
 } from "recharts"
 
 type TinyLineChartProps = {
-  data: { day: number; sessionLength: number }[] | undefined
+  data: { day: string; sessionLength: number }[] | undefined
 }
 
 const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
@@ -27,16 +27,15 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
 }
 
 export const TinyLineChart: React.FC<TinyLineChartProps> = ({ data }) => {
-  const days = ["L", "M", "M", "J", "V", "S", "D"]
-
   return (
-    <div className='container p-5 my-5' style={{ background: "#ff0000" }}>
+    <div
+      className='container p-4 mt-5 rounded'
+      style={{ background: "#ff0000" }}>
       <p className='fs-4 fw-bold text-white'>Durée moyenne des sessions</p>
-      <ResponsiveContainer width='100%' height={400}>
+      <ResponsiveContainer width='100%' height={200}>
         <LineChart width={300} height={100} data={data}>
           <XAxis
             dataKey='day'
-            tickFormatter={(day) => days[day - 1]}
             tick={{ fill: "white" }}
             axisLine={false}
             tickLine={false}

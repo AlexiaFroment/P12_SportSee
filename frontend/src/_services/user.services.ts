@@ -22,6 +22,7 @@ const fetchData = async <T>(url: string): Promise<T> => {
     return result.data
   } catch (err) {
     console.error(`Error fetching data from ${url} : `, err)
+
     throw err
   }
 }

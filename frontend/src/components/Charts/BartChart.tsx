@@ -13,7 +13,7 @@ type BarChartProps = {
   data: { day: string; kilogram: number; calories: number }[] | undefined
 }
 
-export const CustomLegend = () => {
+const CustomLegend = () => {
   return (
     <div className='ms-4'>
       <span className='me-3'>
@@ -46,11 +46,11 @@ export const BartChart: React.FC<BarChartProps> = ({ data }) => {
   return (
     <div className='container p-5' style={{ background: "#FBFBFB" }}>
       <div className='d-flex flex-row justify-content-between align-items-center pb-5'>
-        <p className='fs-5 fw-bold ps-3'>Activité quotidienne</p>
+        <p className='fs-4 fw-bold'>Activité quotidienne</p>
         <CustomLegend />
       </div>
       <div className='p-3'>
-        <ResponsiveContainer width='100%' height={400}>
+        <ResponsiveContainer width='100%' height={200}>
           <BarChart data={data}>
             <CartesianGrid strokeDasharray='3 3' vertical={false} />
 
@@ -58,8 +58,6 @@ export const BartChart: React.FC<BarChartProps> = ({ data }) => {
               dataKey='day'
               stroke='#9b9eac'
               tickLine={false}
-              tickFormatter={(_, index) => (index + 1).toString()}
-              // fontSize={16}
               label={{ position: "insideBottom", offset: -5 }}
             />
             <YAxis

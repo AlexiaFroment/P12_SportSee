@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import { MainLayout } from "@/layout/MainLayout"
 import { Accueil } from "@/pages/public/Accueil"
 import { Profil } from "@/pages/public/Profil"
@@ -10,6 +10,7 @@ export const PublicRouteur = () => {
       <Route path='/' element={<MainLayout />}>
         <Route index element={<Accueil />} />
         <Route path='accueil' element={<Accueil />} />
+        <Route path='profil' element={<Navigate to='/profil/12' />} />
         <Route path='profil/:userId' element={<Profil />} />
         <Route path='*' element={<NotFound />} />
       </Route>

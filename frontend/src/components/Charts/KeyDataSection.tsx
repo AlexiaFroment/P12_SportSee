@@ -14,13 +14,11 @@ export const KeyDataSection: React.FC<KeyDataSectionProps> = ({
   userProfile,
 }) => {
   return (
-    <div className='d-inline-flex flex-column'>
+    <div className='d-inline-flex flex-column justify-content-between'>
       <KeyData
         icon={calory}
         backgroundColor='#FBEAEA'
-        value={`${userProfile
-          .getKeyDataCalorie()
-          ?.toLocaleString("en-US")}KCal`}
+        value={`${userProfile.getKeyDataCalorie()}KCal`}
         label='Calories'
       />
       <KeyData

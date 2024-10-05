@@ -14,7 +14,7 @@ export const KeyData: React.FC<KeyDataProps> = ({
 }) => {
   return (
     <div
-      className='d-inline-flex align-items-center mx-3 mb-3 py-3 '
+      className='d-inline-flex align-items-center rounded mx-3 p-3 '
       style={{ background: "#FBFBFB", minWidth: "240px" }}>
       <Bouton icon={icon} backgroundColor={backgroundColor} />
       <div>

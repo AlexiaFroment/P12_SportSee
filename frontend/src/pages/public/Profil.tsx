@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 
 import { UserProfile } from "@/_modules/Types"
 import { User } from "@/_models/User"
@@ -11,6 +11,8 @@ import { ToggleBtn } from "@/components/ToggleBtn"
 import { KeyDataSection } from "@/components/Charts/KeyDataSection"
 import { BartChart } from "@/components/Charts/BartChart"
 import { TinyLineChart } from "@/components/Charts/TinyLineChart"
+import { RadartChart } from "@/components/Charts/RadartChart"
+import { RadialBartChart } from "@/components/Charts/RadialBartChart"
 
 // import { TinyLineChart } from "@/components/Charts/TinyLineChart"
 
@@ -37,44 +39,28 @@ export const Profil: React.FC = () => {
     navigate(`/profil/${newUser}`)
   }
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        if (useMock) {
-          console.log("get data with mock")
+  const getData = useCallback(async () => {
+    try {
+      if (userId !== "12" && userId !== "18") {
+        navigate("/notfound", { replace: true })
+        return
+      }
+      if (useMock) {
+        console.log("get data with mock")
+        const [userData, userActivity, userPerformance, userAverageSessions] =
+          await Promise.all([
+            MockService.MockData(Number(userId)),
+            MockService.MockActivity(Number(userId)),
+            MockService.MockPerformance(Number(userId)),
+            MockService.MockAverageSessions(Number(userId)),
+          ])
 
-          const [userData, userActivity, userPerformance, userAverageSessions] =
-            await Promise.all([
-              MockService.MockData(Number(userId)),
-              MockService.MockActivity(Number(userId)),
-              MockService.MockPerformance(Number(userId)),
-              MockService.MockAverageSessions(Number(userId)),
-            ])
-
-          if (
-            userData &&
-            userActivity &&
-            userPerformance &&
-            userAverageSessions
-          ) {
-            const userInstance = new User(
-              userData,
-              userActivity,
-              userPerformance,
-              userAverageSessions
-            )
-            setUserProfile(userInstance)
-          }
-        } else {
-          console.log("get data with real api")
-          const [userData, userActivity, userPerformance, userAverageSessions] =
-            await Promise.all([
-              userservices.fetchUser(Number(userId)),
-              userservices.fetchUserActivity(Number(userId)),
-              userservices.fetchUserPerformance(Number(userId)),
-              userservices.fetchUserAverageSession(Number(userId)),
-            ])
-
+        if (
+          userData &&
+          userActivity &&
+          userPerformance &&
+          userAverageSessions
+        ) {
           const userInstance = new User(
             userData,
             userActivity,
@@ -83,15 +69,38 @@ export const Profil: React.FC = () => {
           )
           setUserProfile(userInstance)
         }
-      } catch (err) {
-        console.error("Error to get user profile : ", err)
-      } finally {
-        setLoading(false)
-      }
-    }
+      } else {
+        console.log("get data with real api")
+        const [userData, userActivity, userPerformance, userAverageSessions] =
+          await Promise.all([
+            userservices.fetchUser(Number(userId)),
+            userservices.fetchUserActivity(Number(userId)),
+            userservices.fetchUserPerformance(Number(userId)),
+            userservices.fetchUserAverageSession(Number(userId)),
+          ])
 
-    getData()
-  }, [userId, useMock])
+        const userInstance = new User(
+          userData,
+          userActivity,
+          userPerformance,
+          userAverageSessions
+        )
+        setUserProfile(userInstance)
+      }
+    } catch (err) {
+      console.error("Error to get user profile : ", err)
+      navigate("/NotFound", { replace: true })
+    } finally {
+      setLoading(false)
+    }
+  }, [userId, useMock, navigate])
+
+  // GET DATA FROM API OR MOCK
+  useEffect(() => {
+    if (userId) {
+      getData()
+    }
+  }, [userId, getData])
 
   if (loading) return <p>Loading ...</p>
   if (!userProfile) return <p>User not found</p>
@@ -121,12 +130,18 @@ export const Profil: React.FC = () => {
         <p>Félicitations ! Vous avez explosé vos objectifs hier 👋🏼</p>
       </div>
 
-      <div className='container p-5'>
-        <div className='d-flex'>
-          <BartChart data={userProfile.getActivity()} />
+      <div className='container p-1'>
+        <div className='d-flex py-5'>
+          <div>
+            <BartChart data={userProfile.getActivity()} />
+            <div className='d-flex'>
+              <TinyLineChart data={userProfile.getAverageSessions()} />
+              <RadartChart data={userProfile.getPerformance()} />
+              <RadialBartChart data={userProfile.getScore()} />
+            </div>
+          </div>
           <KeyDataSection userProfile={userProfile} />
         </div>
-        <TinyLineChart data={userProfile.getAverageSessions()} />
       </div>
     </>
   )

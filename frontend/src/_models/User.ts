@@ -28,8 +28,20 @@ export class User implements UserProfileInterface {
     return this.userData?.userInfos?.firstName
   }
 
-  getKeyDataCalorie(): number | undefined {
-    return this.userData?.keyData?.calorieCount
+  getScore(): Array<{ name: string; value: number }> | undefined {
+    const score = this.userData?.score ?? this.userData?.todayScore
+    return score
+      ? [
+          {
+            name: "Score",
+            value: score * 100,
+          },
+        ]
+      : undefined
+  }
+
+  getKeyDataCalorie(): string | undefined {
+    return this.userData?.keyData?.calorieCount.toLocaleString("en-US")
   }
   getKeyDataProtein(): number | undefined {
     return this.userData?.keyData?.proteinCount
@@ -44,16 +56,33 @@ export class User implements UserProfileInterface {
   }
 
   getActivity(): { day: string; kilogram: number; calories: number }[] {
-    return this.userActivity?.sessions?.map((session) => ({
-      day: session.day,
+    return this.userActivity?.sessions?.map((session, index) => ({
+      day: (index + 1).toString(),
       kilogram: session.kilogram,
       calories: session.calories,
     }))
   }
 
-  getAverageSessions(): { day: number; sessionLength: number }[] {
+  getPerformance(): { value: number; kind: string }[] {
+    if (
+      !this.userPerformance ||
+      !this.userPerformance.data ||
+      !this.userPerformance.kind
+    ) {
+      return []
+    }
+
+    return this.userPerformance.data.map((session) => ({
+      kind: this.userPerformance.kind[session.kind],
+      value: session.value,
+    }))
+  }
+
+  getAverageSessions(): { day: string; sessionLength: number }[] {
+    const days = ["L", "M", "M", "J", "V", "S", "D"]
+
     return this.userAverageSessions?.sessions?.map((session) => ({
-      day: session.day,
+      day: days[session.day - 1],
       sessionLength: session.sessionLength,
     }))
   }

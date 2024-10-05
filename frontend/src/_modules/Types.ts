@@ -25,14 +25,7 @@ export interface UserDataActivity {
 
 export interface UserDataPerformance {
   userId: number
-  kind: {
-    1: string
-    2: string
-    3: string
-    4: string
-    5: string
-    6: string
-  }
+  kind: { [key: number]: string }
   data: {
     value: number
     kind: number
@@ -53,10 +46,12 @@ export interface UserProfile {
   userPerformance: UserDataPerformance
   userAverageSessions: UserDataAverageSessions
   getFirstName(): string | undefined
-  getKeyDataCalorie(): number | undefined
+  getScore(): Array<{ name: string; value: number }> | undefined
+  getKeyDataCalorie(): string | undefined
   getKeyDataProtein(): number | undefined
   getKeyDataCarbonydrate(): number | undefined
   getKeyDataLipid(): number | undefined
   getActivity(): { day: string; kilogram: number; calories: number }[]
-  getAverageSessions(): { day: number; sessionLength: number }[]
+  getPerformance(): { value: number; kind: string }[] | []
+  getAverageSessions(): { day: string; sessionLength: number }[]
 }
