@@ -14,6 +14,13 @@ const StyledBtn = styled.button<Omit<BtnProps, "icon">>`
   border-radius: 5px;
   margin: 5px;
 `
+
+/**
+ * Composant Bouton personnalisable.
+ *
+ * @param {BtnProps} props - Les propriétés du bouton.
+ * @returns {JSX.Element} Le bouton avec l'icône.
+ */
 export const Bouton: React.FC<BtnProps> = ({
   width,
   backgroundColor,

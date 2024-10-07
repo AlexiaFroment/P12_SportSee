@@ -49,7 +49,7 @@ export const TinyLineChart: React.FC<TinyLineChartProps> = ({ data }) => {
             data={data}
             dot={false}
           />
-          <Tooltip content={CustomTooltip} />
+          <Tooltip content={CustomTooltip} cursor={false} />
         </LineChart>
       </ResponsiveContainer>
     </div>

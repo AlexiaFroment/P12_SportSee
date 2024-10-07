@@ -1,0 +1,47 @@
+# Mon Projet React
+
+## Description
+
+Ce projet est une application React.
+On doit mettre en place la nouvelle page profil de l'utilisateur du site avec l'intégration de graphiques concernant son activité sportive.
+Réalisation d'un mock de l'API & mise en place d'un service pour les calls sur le backend.
+
+## Prérequis
+
+- Docker
+- Docker Compose
+
+## Installation
+
+1. Clonez le projet : `git clone https://github.com/AlexiaFroment/P12_SportSee.git`
+2. Assurez-vous que **Docker Desktop** est installé et en cours d'exécution.
+3. A la racine du projet qui contient un dossier backend et un frontend, lancez l'application avec la commande : `docker-compose up --build`
+
+## Utilisation
+
+Une fois la commande lancée, vous pouvez ouvrir le projet directement via le terminal ou en vous rendant à l'adresse http://localhost:5173/
+
+---
+
+# My React Project
+
+## Description
+
+This project is a React application.  
+We are implementing a new user profile page for the site, integrating charts related to their sports activity.  
+A mock of the API has been created, along with a service for backend calls.
+
+## Prerequisites
+
+- Docker
+- Docker Compose
+
+## Installation
+
+1. Clone the project: `git clone https://github.com/AlexiaFroment/P12_SportSee.git`
+2. Ensure that **Docker Desktop** is installed and running.
+3. At the root of the project, which contains a `backend` and a `frontend` folder, launch the application with the command: `docker-compose up --build`
+
+## Usage
+
+Once the command is executed, you can open the project directly via the terminal or by going to the address http://localhost:5173/ .
