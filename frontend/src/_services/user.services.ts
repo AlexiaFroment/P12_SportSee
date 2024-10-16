@@ -11,7 +11,7 @@ type ApiResponse<T> = {
   data: T
 }
 
-// FETCH FUNCTION
+// FETCH FUNCTION TO REAL API => This function is designed to be reusable for fetching different types of data from various URLs.
 const fetchData = async <T>(url: string): Promise<T> => {
   try {
     const resp = await fetch(url)

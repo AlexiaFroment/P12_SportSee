@@ -9,8 +9,9 @@ import {
 
 type RadartChartProps = {
   data: { kind: string; value: number }[] | []
+  name: string | undefined
 }
-export const RadartChart: React.FC<RadartChartProps> = ({ data }) => {
+export const RadartChart: React.FC<RadartChartProps> = ({ data, name }) => {
   return (
     <div
       className='container p-4 mt-5 mx-4 rounded'
@@ -24,9 +25,12 @@ export const RadartChart: React.FC<RadartChartProps> = ({ data }) => {
           outerRadius='65%'
           data={data}>
           <PolarGrid />
-          <PolarAngleAxis dataKey='kind' tick={{ fill: "#fff" }} />
+          <PolarAngleAxis
+            dataKey='kind'
+            tick={{ fill: "#fff", fontSize: 12 }}
+          />
           <PolarRadiusAxis tick={false} axisLine={false} />
-          <Radar name='Mike' dataKey='value' fill='#FF0000' fillOpacity={0.8} />
+          <Radar name={name} dataKey='value' fill='#FF0000' fillOpacity={0.8} />
         </RadarChart>
       </ResponsiveContainer>
     </div>

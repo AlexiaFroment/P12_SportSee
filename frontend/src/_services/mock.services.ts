@@ -10,33 +10,39 @@ import {
   UserDataAverageSessions,
 } from "@/_modules/Types"
 
-const MockData = async (userId: number): Promise<UserData | undefined> => {
-  // Utilisation des données fictives (mock)
-  const newData = User.find((user) => user.id === userId)
-  return newData
+// FETCH FUNCTION TO MOCK API => This function is designed to be reusable for fetching different types of data from various data files.
+const fetchMockData = <T>(
+  dataSource: T[],
+  userId: number,
+  idField: keyof T = "userId" as keyof T
+): T | undefined => {
+  return dataSource.find((user: T) => user[idField] === userId)
 }
 
+// FILE USERDATA
+const MockData = async (userId: number): Promise<UserData | undefined> => {
+  return fetchMockData(User, userId, "id")
+}
+
+// FILE ACTIVITY
 const MockActivity = async (
   userId: number
 ): Promise<UserDataActivity | undefined> => {
-  const newData = Activity.find((user) => user.userId === userId)
-  return newData
+  return fetchMockData(Activity, userId)
 }
 
+// FILE PERFORMANCE
 const MockPerformance = async (
   userId: number
 ): Promise<UserDataPerformance | undefined> => {
-  // Utilisation des données fictives (mock)
-  const newData = Performance.find((user) => user.userId === userId)
-  return newData
+  return fetchMockData(Performance, userId)
 }
 
+// FILE SESSIONS
 const MockAverageSessions = async (
   userId: number
 ): Promise<UserDataAverageSessions | undefined> => {
-  // Utilisation des données fictives (mock)
-  const newData = Sessions.find((user) => user.userId === userId)
-  return newData
+  return fetchMockData(Sessions, userId)
 }
 
 const GetAllUsers = () => {

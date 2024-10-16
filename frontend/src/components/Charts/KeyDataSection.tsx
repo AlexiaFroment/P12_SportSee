@@ -14,7 +14,7 @@ export const KeyDataSection: React.FC<KeyDataSectionProps> = ({
   userProfile,
 }) => {
   return (
-    <div className='d-inline-flex flex-column justify-content-between'>
+    <div className='d-inline-flex flex-row flex-xl-column justify-content-between'>
       <KeyData
         icon={calory}
         backgroundColor='#FBEAEA'

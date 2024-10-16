@@ -14,8 +14,6 @@ import { TinyLineChart } from "@/components/Charts/TinyLineChart"
 import { RadartChart } from "@/components/Charts/RadartChart"
 import { RadialBartChart } from "@/components/Charts/RadialBartChart"
 
-// import { TinyLineChart } from "@/components/Charts/TinyLineChart"
-
 export const Profil: React.FC = () => {
   // MANAGEMENT PARAMS ON THE PROFIL ROAD
   const { userId } = useParams<{ userId: string }>()
@@ -106,11 +104,11 @@ export const Profil: React.FC = () => {
   if (!userProfile) return <p>User not found</p>
 
   return (
-    <>
+    <section className='sectionProfil'>
       <div className='container py-3 px-5 d-flex flex-row justify-content-start'>
         <ToggleBtn
-          leftText='Mock API'
-          rightText='Real API'
+          leftText='Real API'
+          rightText='Mock API'
           isChecked={useMock}
           onToggle={handleMockToggle}
         />
@@ -131,7 +129,7 @@ export const Profil: React.FC = () => {
       </div>
 
       <div className='container p-1'>
-        <div className='d-flex py-5'>
+        <div className='d-flex  flex-column flex-xl-row py-5'>
           <div>
             <BartChart data={userProfile.getActivity()} />
             <div className='d-flex'>
@@ -143,6 +141,6 @@ export const Profil: React.FC = () => {
           <KeyDataSection userProfile={userProfile} />
         </div>
       </div>
-    </>
+    </section>
   )
 }

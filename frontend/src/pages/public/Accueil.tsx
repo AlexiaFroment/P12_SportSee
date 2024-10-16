@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import construction from "@/assets/images/construction.png"
 export const Accueil: React.FC = () => {
   return (
-    <div className='container p-5 text-center'>
+    <section className='sectionAccueil container p-5 text-center'>
       <p className='fs-1 fw-bold m-0' style={{ color: "#ff0000" }}>
         {`en construction`.toUpperCase()}
       </p>
@@ -15,6 +15,6 @@ export const Accueil: React.FC = () => {
           Profil
         </Link>
       </p>
-    </div>
+    </section>
   )
 }

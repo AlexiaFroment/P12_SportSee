@@ -1,6 +1,6 @@
 export const NotFound: React.FC = () => {
   return (
-    <div className='container p-5 text-center'>
+    <section className='sectionNotFound container p-5 text-center'>
       <h1
         className='p-4  fw-bold'
         style={{ fontSize: "10rem", color: "#ff0000" }}>
@@ -12,6 +12,6 @@ export const NotFound: React.FC = () => {
       <a href='/accueil' className='p-2 fs-3 ' style={{ color: "#ff0000" }}>
         Retourner sur la page accueil
       </a>
-    </div>
+    </section>
   )
 }
