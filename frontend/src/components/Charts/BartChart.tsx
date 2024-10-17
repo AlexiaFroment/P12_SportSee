@@ -93,21 +93,21 @@ export const BartChart: React.FC<BarChartProps> = ({ data }) => {
             <Tooltip content={<CustomTooltip />} />
 
             <Bar
-              yAxisId='left'
-              dataKey='calories'
-              barSize={15}
-              radius={[20, 20, 0, 0]}
-              fill='#ff0000'
-              name='Calories brûlées (kCal)'
-            />
-
-            <Bar
               yAxisId='right'
               dataKey='kilogram'
               barSize={15}
               radius={[20, 20, 0, 0]}
               fill='#020203'
               name='Poids (kg)'
+            />
+
+            <Bar
+              yAxisId='left'
+              dataKey='calories'
+              barSize={15}
+              radius={[20, 20, 0, 0]}
+              fill='#ff0000'
+              name='Calories brûlées (kCal)'
             />
           </BarChart>
         </ResponsiveContainer>
