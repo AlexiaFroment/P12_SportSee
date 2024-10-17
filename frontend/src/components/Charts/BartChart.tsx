@@ -54,7 +54,7 @@ const calculateYAxisTicks = (data: { kilogram: number }[]) => {
 }
 
 export const BartChart: React.FC<BarChartProps> = ({ data }) => {
-  const yAxisTicks = data ? calculateYAxisTicks(data) : [0, 50, 100]
+  const yAxisTicks = data?.length ? calculateYAxisTicks(data) : [0, 50, 100]
 
   return (
     <div className='container p-5' style={{ background: "#FBFBFB" }}>

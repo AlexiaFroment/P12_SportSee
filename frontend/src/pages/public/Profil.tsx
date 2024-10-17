@@ -123,7 +123,7 @@ export const Profil: React.FC = () => {
       <div className='container py-3 px-5'>
         <h1 className='py-4 fw-bold'>
           <span>Bonjour</span>
-          <span style={{ color: "red" }}> {userProfile.getFirstName()}</span>
+          <span style={{ color: "red" }}> {userProfile?.getFirstName()}</span>
         </h1>
         <p>Félicitations ! Vous avez explosé vos objectifs hier 👋🏼</p>
       </div>
@@ -131,11 +131,14 @@ export const Profil: React.FC = () => {
       <div className='container p-1'>
         <div className='d-flex  flex-column flex-xl-row py-5'>
           <div>
-            <BartChart data={userProfile.getActivity()} />
+            <BartChart data={userProfile?.getActivity()} />
             <div className='d-flex'>
-              <TinyLineChart data={userProfile.getAverageSessions()} />
-              <RadartChart data={userProfile.getPerformance()} />
-              <RadialBartChart data={userProfile.getScore()} />
+              <TinyLineChart data={userProfile?.getAverageSessions()} />
+              <RadartChart
+                data={userProfile?.getPerformance()}
+                name={userProfile?.getFirstName()}
+              />
+              <RadialBartChart data={userProfile?.getScore()} />
             </div>
           </div>
           <KeyDataSection userProfile={userProfile} />

@@ -6,9 +6,11 @@ type BtnProps = {
   icon: string
 }
 
-const StyledBtn = styled.button<Omit<BtnProps, "icon">>`
+const StyledBtn = styled.button<
+  Omit<BtnProps, "icon"> & { $backgroundColor?: string }
+>`
   width: ${(props) => props.width || "65px"};
-  background-color: ${(props) => props.backgroundColor || "white"};
+  background-color: ${(props) => props.$backgroundColor || "white"};
   aspect-ratio: 1/1;
   border: none;
   border-radius: 5px;
@@ -27,7 +29,7 @@ export const Bouton: React.FC<BtnProps> = ({
   icon,
 }) => {
   return (
-    <StyledBtn width={width} backgroundColor={backgroundColor}>
+    <StyledBtn width={width} $backgroundColor={backgroundColor}>
       <img src={icon} alt='icon' />
     </StyledBtn>
   )
