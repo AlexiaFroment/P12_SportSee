@@ -1,7 +1,7 @@
-import User from "@/Assets/data/mock/mock_USER_DATA.json"
-import Activity from "@/Assets/data/mock/mock_USER_ACTIVITY.json"
-import Performance from "@/Assets/data/mock/mock_USER_PERFORMANCE.json"
-import Sessions from "@/Assets/data/mock/mock_USER_AVERAGE_SESSIONS.json"
+import User from "@/assets/Data/mock/mock_USER_DATA.json"
+import Activity from "@/assets/Data/mock/mock_USER_ACTIVITY.json"
+import Performance from "@/assets/Data/mock/mock_USER_PERFORMANCE.json"
+import Sessions from "@/assets/Data/mock/mock_USER_AVERAGE_SESSIONS.json"
 
 import {
   UserData,
@@ -14,7 +14,7 @@ import {
 const fetchMockData = <T>(
   dataSource: T[],
   userId: number,
-  idField: keyof T = "userId" as keyof T
+  idField: keyof T = "userId" as keyof T,
 ): T | undefined => {
   return dataSource.find((user: T) => user[idField] === userId)
 }
@@ -26,21 +26,21 @@ const MockData = async (userId: number): Promise<UserData | undefined> => {
 
 // FILE ACTIVITY
 const MockActivity = async (
-  userId: number
+  userId: number,
 ): Promise<UserDataActivity | undefined> => {
   return fetchMockData(Activity, userId)
 }
 
 // FILE PERFORMANCE
 const MockPerformance = async (
-  userId: number
+  userId: number,
 ): Promise<UserDataPerformance | undefined> => {
   return fetchMockData(Performance, userId)
 }
 
 // FILE SESSIONS
 const MockAverageSessions = async (
-  userId: number
+  userId: number,
 ): Promise<UserDataAverageSessions | undefined> => {
   return fetchMockData(Sessions, userId)
 }
