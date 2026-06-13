@@ -9,10 +9,7 @@ export const NotFound: React.FC = () => {
       <p className='p-2  fs-2' style={{ color: "#ff0000" }}>
         Oups ! La page que vous demandez n'existe pas
       </p>
-      <a
-        href='https://alexiafroment.github.io/'
-        className='p-2 fs-3 '
-        style={{ color: "#ff0000" }}>
+      <a href='/accueil' className='p-2 fs-3 ' style={{ color: "#ff0000" }}>
         Retourner sur la page accueil
       </a>
     </section>
